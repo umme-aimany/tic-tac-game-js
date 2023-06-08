@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tic Tac Toe</title>
+  <style>
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background-color: lightgray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tic Tac Toe</h1>
+  <div class="board">
+    <div class="cell" onclick="makeMove(0, 0)"></div>
+    <div class="cell" onclick="makeMove(0, 1)"></div>
+    <div class="cell" onclick="makeMove(0, 2)"></div>
+    <div class="cell" onclick="makeMove(1, 0)"></div>
+    <div class="cell" onclick="makeMove(1, 1)"></div>
+    <div class="cell" onclick="makeMove(1, 2)"></div>
+    <div class="cell" onclick="makeMove(2, 0)"></div>
+    <div class="cell" onclick="makeMove(2, 1)"></div>
+    <div class="cell" onclick="makeMove(2, 2)"></div>
+  </div>
+  <button onclick="resetBoard()">Reset</button>
+  <script>
+    // Game state
+    let currentPlayer = 'X';
+    let board = [
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', '']
+    ];
+    let gameEnded = false;
+
+    // Function to handle a move
+    function makeMove(row, col) {
+      if (gameEnded || board[row][col] !== '') {
+        return;
+      }
+
+      // Update board state
+      board[row][col] = currentPlayer;
+
+      // Update cell display
+      let cell = document.querySelector(`.board .cell:nth-child(${row * 3 + col + 1})`);
+      cell.textContent = currentPlayer;
+
+      // Check for a winner
+      if (checkWinner()) {
+        endGame(`${currentPlayer} wins!`);
+        return;
+      }
+
+      // Check for a tie
+      if (checkTie()) {
+        endGame("It's a tie!");
+        return;
+      }
+
+      // Switch player
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    }
+
+    // Function to check for a winner
+    function checkWinner() {
+      // Check rows
+      for (let i = 0; i < 3; i++) {
+        if (board[i][0] === currentPlayer && board[i][1] === currentPlayer && board[i][2] === currentPlayer) {
+          return true;
+        }
+      }
+
+      // Check columns
+      for (let i = 0; i < 3; i++) {
+        if (board[0][i] === currentPlayer && board[1][i] === currentPlayer && board[2][i] === currentPlayer) {
+          return true;
+        }
+      }
+
+      // Check diagonals
+      if (board[0][0] === currentPlayer && board[1][1] === currentPlayer && board[2][2] === currentPlayer) {
+        return true;
+      }
+
+      if (board[0][
